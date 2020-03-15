@@ -50,9 +50,10 @@
                 <button name="recompute_lines_agents" type="object" string="Recompute lines agents" states="draft"/>
             </xpath>
             <field name="amount_total" position="after">
+                <field name='company_currency_id' invisible="True"/>
                 <field name="commission_total"
                        widget="monetary"
-                       options="{'currency_field': 'currency_id'}"/>
+                       options="{'currency_field': 'company_currency_id'}"/>
             </field>
         </field>
     </record>
