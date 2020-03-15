@@ -13,6 +13,8 @@
         'account',
         'product',
         'sale',
+        'sale_company_currency',
+        'account_invoice_currency',
     ],
     'data': [
         'security/ir.model.access.csv',
