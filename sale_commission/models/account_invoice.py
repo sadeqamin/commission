@@ -127,6 +127,13 @@ class AccountInvoiceLineAgent(models.Model):
         readonly=True,
     )
 
+    company_currency_id = fields.Many2one(
+        'res.currency',
+        related='company_id.currency_id',
+        string="Company Currency",
+        readonly=True
+    )
+
     @api.depends('object_id.price_subtotal')
     def _compute_amount(self):
         for line in self:
@@ -136,6 +143,8 @@ class AccountInvoiceLineAgent(models.Model):
                 line.object_id.commission_free,
                 line.product,
                 line.object_id.quantity)
+            line.amount = line.object_id.currency_id.compute(
+                line.amount, line.company_id.currency_id)
             # Refunds commissions are negative
             if line.invoice.type in ('out_refund', 'in_refund'):
                 line.amount = -line.amount
