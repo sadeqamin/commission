@@ -143,7 +143,9 @@ class AccountInvoiceLineAgent(models.Model):
                 line.object_id.commission_free,
                 line.product,
                 line.object_id.quantity)
-            line.amount = line.object_id.currency_id.compute(
+            # Create new refund raise error
+            if line.amount > 0:
+                line.amount = line.object_id.currency_id.compute(
                 line.amount, line.company_id.currency_id)
             # Refunds commissions are negative
             if line.invoice.type in ('out_refund', 'in_refund'):
