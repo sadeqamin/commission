@@ -32,6 +32,10 @@ class ResPartner(models.Model):
     settlements = fields.One2many(
         comodel_name="sale.commission.settlement", inverse_name="agent",
         readonly=True)
+    commission_all_agents = fields.Boolean(
+        default=False, string="All Agents",
+        help="commission to all agents (True), commission only to Salesperson(False - Default).")
+
 
     @api.onchange('agent_type')
     def onchange_agent_type(self):
