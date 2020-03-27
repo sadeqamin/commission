@@ -14,6 +14,7 @@
                 <field name="agents"
                        attrs="{'invisible': [('customer', '=', False)]}"
                        widget="many2many_tags"/>
+                <field name="commission_all_agents"/>
             </field>
             <page name="sales_purchases" position="after">
                 <page name="agent_information"
