@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
     commission_total = fields.Float(
         string="Commissions", compute="_compute_commission_total",
         store=True)
-
+    
     def recompute_lines_agents(self):
         self.mapped('order_line').recompute_agents()
 
@@ -62,10 +62,18 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         res = super(SaleOrderLine, self)._prepare_agents_vals()
         for agent in self.order_id.partner_id.agents:
-            res.append({
+            # modified to calculate commission if agent = salesperson or to all assigned agents
+            if self.order_id.partner_id.commission_all_agents:
+                if agent == self.order_id.user_id.partner_id:
+                    res.append({
+                        'agent': agent.id,
+                        'commission': agent.commission.id,
+                    })
+            else:
+                res.append({
                 'agent': agent.id,
                 'commission': agent.commission.id,
-            })
+                })
         return res
 
     def _prepare_invoice_line(self, qty):
